@@ -50,15 +50,16 @@ router.post("/upload", multerMiddleware.single("slika"), async (req, res) => {
     url: req.file.path,
     key: req.file.key
   });
-  return res.json(slika);
+  res.redirect("/");
 });
-router.get("/slike", async (req, res) => {
+router.get("/", async (req, res) => {
   const slike = await Slika.find();
-  return res.json(slike);
+  console.log(slike);
+  return res.render("index", { slike: slike });
 });
 router.delete("/slika/:id", async (req, res) => {
   const slika = await Slika.findById(req.params.id);
   await slika.remove();
-  return res.send("deleted");
+  res.redirect("/");
 });
 module.exports = router;

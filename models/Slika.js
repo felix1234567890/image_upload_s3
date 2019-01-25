@@ -15,13 +15,10 @@ const slika = new mongoose.Schema(
   },
   { timestamps: true }
 );
-slika.pre("remove", async function(err, data) {
-  await s3.deleteObject({
+slika.pre("remove", function() {
+  s3.deleteObject({
     Bucket: "picture-upload-10",
     Key: this.key
-  });
-  if (err) console.log(err);
-  // error
-  else console.log("deleted"); // deleted
+  }).promise();
 });
 module.exports = mongoose.model("Slika", slika);

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+    <style>
+    .custom-file-label {
+  overflow: hidden;
+}
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container mt-2">
+      <h1 class="text-center">Album slika</h1>
+      <div class="row mt-3">
+        <div class="col-md-8 offset-md-2">
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" name="slika" id="customFile">
+                    <label class="custom-file-label" for="customFile">Izaberi sliku</label>
+                  </div>
+                  <button class="btn btn-primary mt-1" type="submit">Prenesi</button>
+            </form>
+            <div class="row mt-3">
+                <div class="col">
+                  <% slike.forEach(function(slika) { %> 
+                    <div class="card" style="width: 100%;">
+                        <img class="card-img-top" src="<%= 'https://s3.eu-central-1.amazonaws.com/picture-upload-10/' + slika.key %>" alt="Card image cap">
+                        <div class="card-body">
+                          <p class="card-text"><%= slika.name %></p>
+                          <form method="POST" action="<%= '/slika/'+slika._id + '?_method=DELETE' %>">
+                            <button type="submit" class="btn btn-danger">Izbriši sliku</button>
+                          </form>
+                        </div>
+                      </div>
+                  <% }) %> 
+                </div></div>
+        </div>
+      </div>
+      
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+      integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+      integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+    $("input[type=file]").change(function () {
+  var fieldVal = $(this).val();
+
+  // Change the node's value by removing the fake path (Chrome)
+  fieldVal = fieldVal.replace("C:\\fakepath\\", "");
+    
+  if (fieldVal != undefined || fieldVal != "") {
+    $(this).next(".custom-file-label").attr('data-content', fieldVal);
+    $(this).next(".custom-file-label").text(fieldVal);
+  }
+
+});
+    </script>
+  </body>
+</html>
